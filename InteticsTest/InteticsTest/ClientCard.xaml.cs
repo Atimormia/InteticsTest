@@ -69,6 +69,11 @@ namespace InteticsTest
         private void addClient_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)clientDataGrid.Items[clientDataGrid.Items.Count-2];
+            if (row == null)
+            {
+                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             DateTime date = new DateTime();
             if (DateTime.TryParse(row[3].ToString(), out date))
                 serviceStationDataSetClientTableAdapter.Insert(row[1].ToString(), row[2].ToString(), date, row[4].ToString(), row[5].ToString(), row[6].ToString());
@@ -84,10 +89,16 @@ namespace InteticsTest
         private void GetClientDataFromCurrentRow(out int id, out string name, out string surname)
         {
             DataRowView currentRow = (DataRowView)this.clientDataGrid.SelectedItem;
-
+            
             id = Int32.Parse(currentRow[0].ToString());
             name = currentRow[1].ToString();
             surname = currentRow[2].ToString();
+
+            if (currentRow == null)
+            {
+                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
 
         private void chooseClient_Click(object sender, RoutedEventArgs e)
@@ -96,7 +107,7 @@ namespace InteticsTest
             string name;
             string surname;
             GetClientDataFromCurrentRow(out id, out name, out surname);
-            newOrderWindow.GetClientData(id, name, surname);
+            newOrderWindow.SetClientData(id, name, surname);
 
             this.Close();
         }

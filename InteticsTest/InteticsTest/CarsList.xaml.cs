@@ -50,17 +50,22 @@ namespace InteticsTest
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             serviceStationDataSetCarTableAdapter.FillByClientId(serviceStationDataSet.Car,clientId);
-            System.Windows.Data.CollectionViewSource carViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("carViewSource")));
+            CollectionViewSource carViewSource = ((CollectionViewSource)(this.FindResource("carViewSource")));
             carViewSource.View.MoveCurrentToFirst();
         }
 
         private void chooseCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView currentRow = (DataRowView)this.carDataGrid.SelectedItem;
+            if (currentRow == null)
+            {
+                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             int id = Int32.Parse(currentRow[0].ToString());
             string vin = currentRow[4].ToString();
-            newOrderWindow.GetCarData(id,vin);
+            newOrderWindow.SetCarData(id,vin);
 
             this.Close();
         }
@@ -68,9 +73,15 @@ namespace InteticsTest
         private void addCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)carDataGrid.Items[carDataGrid.Items.Count - 2];
+            if (row == null)
+            {
+                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             for (int i = 1; i < row.Row.Table.Columns.Count-1; i++)
             {
-                MessageBox.Show(row[i].ToString());
+                //MessageBox.Show(row[i].ToString());
                 if (row[i].ToString() == "")
                 {
                     MessageBox.Show("Enter car data","CarsList",MessageBoxButton.OK,MessageBoxImage.Warning);
@@ -87,6 +98,12 @@ namespace InteticsTest
         private void editCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)carDataGrid.SelectedItem;
+            if (row == null)
+            {
+                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             if (serviceStationDataSetCarTableAdapter.UpdateByCarId(row[1].ToString(), row[2].ToString(), Int32.Parse(row[3].ToString()), row[4].ToString(), clientId, Int32.Parse(row[0].ToString())) > 0)
             {
                 MessageBox.Show("Success");
@@ -97,6 +114,12 @@ namespace InteticsTest
         private void deleteCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)carDataGrid.SelectedItem;
+            if (row == null)
+            {
+                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             int carId = Int32.Parse(row[0].ToString());
             int ordersCount = (int)serviceStationDataSetCarTableAdapter.CountOrdersByClientId(carId);
 

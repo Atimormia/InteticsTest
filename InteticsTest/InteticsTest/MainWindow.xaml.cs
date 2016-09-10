@@ -42,5 +42,11 @@ namespace InteticsTest
             clientCardWindow.Show();
 
         }
+
+        private void OrdersByCar_Click(object sender, RoutedEventArgs e)
+        {
+            OrdersList ordersListWindow = new OrdersList();
+            ordersListWindow.Show();
+        }
     }
 }

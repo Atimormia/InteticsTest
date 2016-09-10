@@ -73,6 +73,9 @@
     <Compile Include="CarsList.xaml.cs">
       <DependentUpon>CarsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OrdersList.xaml.cs">
+      <DependentUpon>OrdersList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ServiceStationDataSet.cs">
       <DependentUpon>ServiceStationDataSet.xsd</DependentUpon>
     </Compile>
@@ -105,6 +108,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OrdersList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

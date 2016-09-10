@@ -9,7 +9,7 @@
     <Grid>
         <Button x:Name="newOrder" Content="New order" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Width="497" Height="50" Click="newOrder_Click"/>
         <Button x:Name="clientCard" Content="Client card" HorizontalAlignment="Left" Margin="10,149,0,0" VerticalAlignment="Top" Width="497" Height="50" Click="clientCard_Click"/>
-        <Button x:Name="OrdersByCar" Content="Orders by car" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" Width="497" Height="50"/>
+        <Button x:Name="OrdersByCar" Content="Orders by car" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" Width="497" Height="50" Click="OrdersByCar_Click"/>
         <Button x:Name="exit" Content="Exit" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" Width="497" Height="50" Click="exit_Click"/>
         <Label x:Name="label" Content="Service Station" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="497" Height="46"/>
         <Label x:Name="label1" Content="Administrator" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top" Width="497" Height="28"/>

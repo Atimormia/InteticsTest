@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace InteticsTest
 
         int clientId = -1;
         int carId = -1;
+        OrdersList ordersListWindow;
         
         public NewOrder()
         {
@@ -31,6 +33,11 @@ namespace InteticsTest
 
             serviceStationDataSet = ((InteticsTest.ServiceStationDataSet)(this.FindResource("serviceStationDataSet")));
             serviceStationDataSetOrderTableAdapter = new InteticsTest.ServiceStationDataSetTableAdapters.OrderTableAdapter();
+        }
+
+        public NewOrder(OrdersList parent) : this()
+        {
+            ordersListWindow = parent;
         }
 
         private void chooseClient_Click(object sender, RoutedEventArgs e)
@@ -52,17 +59,32 @@ namespace InteticsTest
             }
         }
 
-        public void GetClientData(int id, string name, string surname)
+        public void SetClientData(int id, string name, string surname)
         {
             clientId = id;
             clientName.Text = name;
             clientSurname.Text = surname;
         }
 
-        public void GetCarData(int id,string vin)
+        public void SetCarData(int id,string vin)
         {
             carId = id;
             carVIN.Text = vin;
+        }
+
+        public void SetOrderData(DateTime date, double amount, string status)
+        {
+            orderDate.SelectedDate = date;
+            orderAmount.Text = amount.ToString();
+            for (int i = 0; i < orderStatus.Items.Count; i++)
+            {
+                ComboBoxItem item = (ComboBoxItem)orderStatus.Items[i];
+                if (item.Content.ToString().ToLower() == status.ToLower())
+                {
+                    orderStatus.SelectedIndex = i;
+                }
+            }
+
         }
 
         private void addOrder_Click(object sender, RoutedEventArgs e)
@@ -82,7 +104,10 @@ namespace InteticsTest
             if (serviceStationDataSetOrderTableAdapter.Insert(orderDate.SelectedDate, amount, orderStatus.Text, carId, clientId) > 0)
             {
                 MessageBox.Show("Success");
+                ordersListWindow.ReloadData();
+                Close();
             }
+
         }
     }
 }
