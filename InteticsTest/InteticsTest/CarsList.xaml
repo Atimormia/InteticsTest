@@ -19,13 +19,13 @@
                 <DataGridTextColumn x:Name="vinColumn" Binding="{Binding vin}" Header="vin" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="nameClient" HorizontalAlignment="Left" Height="23" Margin="59,10,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="152" IsEnabled="False"/>
-        <TextBox x:Name="surnameClient" HorizontalAlignment="Left" Height="23" Margin="214,10,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Width="154" IsEnabled="False"/>
+        <TextBox x:Name="clientName" HorizontalAlignment="Left" Height="23" Margin="59,10,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="152" IsEnabled="False"/>
+        <TextBox x:Name="clientSurname" HorizontalAlignment="Left" Height="23" Margin="214,10,0,0" TextWrapping="Wrap" Text="Surname" VerticalAlignment="Top" Width="154" IsEnabled="False"/>
         <Label x:Name="label" Content="Client:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="43"/>
         <Button x:Name="addCar" Content="Add" HorizontalAlignment="Left" Margin="10,246,0,0" VerticalAlignment="Top" Width="41" IsEnabled="False"/>
         <Button x:Name="deleteCar" Content="Delete" HorizontalAlignment="Left" Margin="98,246,0,0" VerticalAlignment="Top" Width="42" IsEnabled="False"/>
         <Button x:Name="editCar" Content="Edit" HorizontalAlignment="Left" Margin="54,246,0,0" VerticalAlignment="Top" Width="41" IsEnabled="False"/>
-        <Button x:Name="chooseCar" Content="Choose" HorizontalAlignment="Left" Margin="293,246,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="chooseCar" Content="Choose" HorizontalAlignment="Left" Margin="293,246,0,0" VerticalAlignment="Top" Width="75" Click="chooseCar_Click"/>
 
     </Grid>
 </Window>

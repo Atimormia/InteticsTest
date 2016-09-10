@@ -73,6 +73,9 @@
     <Compile Include="CarsList.xaml.cs">
       <DependentUpon>CarsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ServiceStationDataSet.cs">
+      <DependentUpon>ServiceStationDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ServiceStationDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

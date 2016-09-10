@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:InteticsTest"
         mc:Ignorable="d"
         Title="NewOrder" Height="230" Width="440">
+    <Window.Resources>
+        <local:ServiceStationDataSet x:Key="serviceStationDataSet"/>
+        <CollectionViewSource x:Key="orderViewSource" Source="{Binding Order, Source={StaticResource serviceStationDataSet}}"/>
+    </Window.Resources>
     <Grid HorizontalAlignment="Left" Width="430">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="107*"/>
@@ -28,7 +32,7 @@
             <ComboBoxItem Content="In progress"/>
             <ComboBoxItem Content="Cancelled"/>
         </ComboBox>
-        <Button x:Name="addOrder" Content="Add Order" HorizontalAlignment="Left" Margin="123.418,166,0,0" VerticalAlignment="Top" Width="83" Height="23" Grid.Column="1"/>
+        <Button x:Name="addOrder" Content="Add Order" HorizontalAlignment="Left" Margin="123.418,166,0,0" VerticalAlignment="Top" Width="83" Height="23" Grid.Column="1" Click="addOrder_Click"/>
 
     </Grid>
 </Window>
