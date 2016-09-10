@@ -81,7 +81,7 @@ namespace InteticsTest
 
             if (serviceStationDataSetOrderTableAdapter.Insert(orderDate.SelectedDate, amount, orderStatus.Text, carId, clientId) > 0)
             {
-                MessageBox.Show("Saccess");
+                MessageBox.Show("Success");
             }
         }
     }

@@ -17,7 +17,7 @@
         <Button x:Name="find" Content="Find" HorizontalAlignment="Left" Margin="498,11,0,0" VerticalAlignment="Top" Width="90" Height="23" Click="find_Click"/>
         <Button x:Name="addClient" Content="Add" HorizontalAlignment="Left" Margin="11,244,0,0" VerticalAlignment="Top" Width="83" Height="23" Click="addClient_Click"/>
         <Button x:Name="chooseClient" Content="Choose" HorizontalAlignment="Left" Margin="498,244,0,0" VerticalAlignment="Top" Width="90" Height="23" IsEnabled="False" Click="chooseClient_Click"/>
-        <DataGrid x:Name="clientDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource clientViewSource}}" Margin="11,39,10,52" RowDetailsVisibilityMode="VisibleWhenSelected" SelectionChanged="clientDataGrid_SelectionChanged">
+        <DataGrid x:Name="clientDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource clientViewSource}}" Margin="11,39,10,52" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="first_nameColumn" Binding="{Binding first_name}" Header="first name" Width="100" MinWidth="30"/>
                 <DataGridTextColumn x:Name="last_nameColumn" Binding="{Binding last_name}" Header="last name" Width="100"/>
@@ -33,7 +33,7 @@
                 <DataGridTextColumn x:Name="emailColumn" Binding="{Binding email}" Header="email" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="addClient_Copy1" Content="Related cars" HorizontalAlignment="Left" Margin="405,244,0,0" VerticalAlignment="Top" Width="83" Height="23" IsEnabled="False"/>
+        <Button x:Name="relatedCars" Content="Related cars" HorizontalAlignment="Left" Margin="405,244,0,0" VerticalAlignment="Top" Width="83" Height="23" Click="relatedCars_Click"/>
         <Button x:Name="showAll" Content="Show all" HorizontalAlignment="Left" Margin="99,244,0,0" VerticalAlignment="Top" Width="83" Height="23" Click="showAll_Click"/>
 
     </Grid>

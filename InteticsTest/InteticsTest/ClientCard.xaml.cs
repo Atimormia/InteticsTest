@@ -25,13 +25,19 @@ namespace InteticsTest
 
         NewOrder newOrderWindow;
 
-        public ClientCard(NewOrder parent)
+        public ClientCard()
         {
             InitializeComponent();
-            newOrderWindow = parent;
-
+            
             serviceStationDataSet = ((InteticsTest.ServiceStationDataSet)(this.FindResource("serviceStationDataSet")));
             serviceStationDataSetClientTableAdapter = new InteticsTest.ServiceStationDataSetTableAdapters.ClientTableAdapter();
+        }
+
+        public ClientCard(NewOrder parent):this()
+        {
+            newOrderWindow = parent;
+            relatedCars.IsEnabled = false;
+            chooseClient.IsEnabled = true;
         }
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -75,21 +81,35 @@ namespace InteticsTest
             serviceStationDataSetClientTableAdapter.Fill(serviceStationDataSet.Client);
         }
 
-        private void clientDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GetClientDataFromCurrentRow(out int id, out string name, out string surname)
         {
-            chooseClient.IsEnabled = true;
+            DataRowView currentRow = (DataRowView)this.clientDataGrid.SelectedItem;
+
+            id = Int32.Parse(currentRow[0].ToString());
+            name = currentRow[1].ToString();
+            surname = currentRow[2].ToString();
         }
 
         private void chooseClient_Click(object sender, RoutedEventArgs e)
         {
-            DataRowView currentRow = (DataRowView)this.clientDataGrid.SelectedItem;
-            
-            int id = Int32.Parse(currentRow[0].ToString());
-            string name = currentRow[1].ToString();
-            string surname = currentRow[2].ToString();
+            int id;
+            string name;
+            string surname;
+            GetClientDataFromCurrentRow(out id, out name, out surname);
             newOrderWindow.GetClientData(id, name, surname);
 
             this.Close();
+        }
+
+        private void relatedCars_Click(object sender, RoutedEventArgs e)
+        {
+            int id;
+            string name;
+            string surname;
+            GetClientDataFromCurrentRow(out id, out name, out surname);
+
+            CarsList carsListWindow = new CarsList(id, name, surname);
+            carsListWindow.Show();
         }
     }
 }

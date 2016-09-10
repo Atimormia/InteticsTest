@@ -35,5 +35,12 @@ namespace InteticsTest
             NewOrder newOrderWindow = new NewOrder();
             newOrderWindow.Show();
         }
+
+        private void clientCard_Click(object sender, RoutedEventArgs e)
+        {
+            ClientCard clientCardWindow = new ClientCard();
+            clientCardWindow.Show();
+
+        }
     }
 }

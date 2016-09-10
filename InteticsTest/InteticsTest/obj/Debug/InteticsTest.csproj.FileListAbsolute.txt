@@ -45,3 +45,4 @@ C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\Intet
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\InteticsTest.csproj.GenerateResource.Cache
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\InteticsTest.exe
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\InteticsTest.pdb
+C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\InteticsTest.csprojResolveAssemblyReference.cache
