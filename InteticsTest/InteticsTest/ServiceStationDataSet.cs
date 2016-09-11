@@ -7,9 +7,13 @@
     }
 }
 
-namespace InteticsTest.ServiceStationDataSetTableAdapters {
-    
-    
-    public partial class CarTableAdapter {
+namespace InteticsTest.ServiceStationDataSetTableAdapters
+{
+    partial class ClientTableAdapter
+    {
+    }
+
+    public partial class CarTableAdapter
+    {
     }
 }
