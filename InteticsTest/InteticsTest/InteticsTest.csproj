@@ -83,12 +83,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Factory\CarCreator.cs" />
+    <Compile Include="Factory\ClientCreator.cs" />
+    <Compile Include="Factory\Creator.cs" />
+    <Compile Include="Factory\OrderCreator.cs" />
     <Compile Include="Model\Car.cs" />
-    <Compile Include="Model\CarRepository.cs" />
+    <Compile Include="DB\CarRepository.cs" />
     <Compile Include="Model\Client.cs" />
-    <Compile Include="Model\ClientRepository.cs" />
+    <Compile Include="DB\ClientRepository.cs" />
+    <Compile Include="Model\Entity.cs" />
     <Compile Include="Model\Order.cs" />
-    <Compile Include="Model\OrderRepository.cs" />
+    <Compile Include="DB\OrderRepository.cs" />
     <Compile Include="UI\CarsList.xaml.cs">
       <DependentUpon>CarsList.xaml</DependentUpon>
     </Compile>
@@ -201,6 +206,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

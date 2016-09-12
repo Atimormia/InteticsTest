@@ -8,9 +8,9 @@ using System.Windows;
 
 namespace InteticsTest.Model
 {
-    public class Order
+    public class Order: Entity
     {
-        public int id { get; set; }
+        //public int id { get; set; }
         public DateTime? date { get; set; }
         public double? amount { get; set; }
         public string status { get; set; }
@@ -26,31 +26,6 @@ namespace InteticsTest.Model
             int? carId = -1,
             int? clientId = -1)
         {
-            CreateOrder(id,date,amount,status,carId,clientId);
-        }
-
-        public Order(string id = "",
-            string date = "",
-            string amount = "",
-            string status = "",
-            string carId = "",
-            string clientId = "")
-        {
-            CreateOrder(id, date, amount, status, carId, clientId);
-        }
-
-        public Order(DataRowView row)
-        {
-            CreateOrder(row);
-        }
-
-        private void CreateOrder(int id = -1,
-            DateTime? date = null,
-            double? amount = null,
-            string status = "",
-            int? carId = -1,
-            int? clientId = -1)
-        {
             this.id = id;
             this.date = date;
             if (ValidateAmount(amount)) this.amount = amount;
@@ -59,74 +34,22 @@ namespace InteticsTest.Model
             this.clientId = clientId;
         }
 
-        private void CreateOrder(string id = "",
+        public Order(string id = "",
             string date = "",
             string amount = "",
             string status = "",
             string carId = "",
-            string clientId = "")
-        {
-            int i;
-            try
-            {
-                i = Int32.Parse(id);
-            }
-            catch
-            {
-                i = -1;
-            }
-            DateTime? d;
-            try
-            {
-                d = DateTime.Parse(date);
-            }
-            catch
-            {
-                d = null;
-            }
-            double? a = null;
-            if (ValidateAmount(amount))
-            {
-                a = Double.Parse(amount);
-            }
-            int cl;
-            try
-            {
-                cl = Int32.Parse(clientId);
-            }
-            catch
-            {
-                cl = -1;
-            }
-            int c;
-            try
-            {
-                c = Int32.Parse(carId);
-            }
-            catch
-            {
-                c = -1;
-            }
-            CreateOrder(i, d, a, status, c, cl);
-        }
+            string clientId = "") : this(ParseId(id), ParseDate(date), ParseAmount(amount),status,ParseId(carId),ParseId(clientId))
+        { }
 
-        private void CreateOrder(DataRowView row)
-        {
-            if (row != null)
-            {
-                CreateOrder(row["id_order"].ToString(),
+        public Order(DataRowView row):this(row["id_order"].ToString(),
                     row["date"].ToString(),
                     row["amount"].ToString(),
                     row["status"].ToString(),
                     row["id_client"].ToString(),
-                    row["id_car"].ToString());
-            }
-            else
-            {
-                MessageBox.Show("Error", "Order", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
+                    row["id_car"].ToString())
+        { }
+        
         public bool HasEmptyIds()
         {
             if (carId ==null || clientId==null || carId == -1 || clientId == -1)
@@ -152,19 +75,19 @@ namespace InteticsTest.Model
             return Double.TryParse(amount,out a) && ValidateAmount(a);
         }
 
-        public void SetAmount(string amount)
+        public static double? ParseAmount(string amount)
         {
             if (ValidateAmount(amount))
             {
-                this.amount = Double.Parse(amount);
+                return Double.Parse(amount);
             }
             else
             {
-                this.amount = null;
+                return null;
             }
         }
 
-        public bool HasEmptyData()
+        public override bool HasEmptyData()
         {
             if (date ==null || amount == null || status == null || status == "")
             {

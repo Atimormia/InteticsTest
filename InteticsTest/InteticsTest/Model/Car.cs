@@ -8,9 +8,9 @@ using System.Windows;
 
 namespace InteticsTest.Model
 {
-    public class Car
+    public class Car: Entity
     {
-        public int id { get; set; }
+        //public int id { get; set; }
         public string make { get; set; }
         public string model { get; set; }
         public int? year { get; set; }
@@ -28,31 +28,6 @@ namespace InteticsTest.Model
             string vin = "",
             int? clientId = -1)
         {
-            CreateCar(id, make, model, year, vin, clientId);
-        }
-
-        public Car(string id = "",
-            string make = "",
-            string model = "",
-            string year = "",
-            string vin = "",
-            string clientId = "")
-        {
-            CreateCar(id, make, model, year, vin, clientId);
-        }
-
-        public Car(DataRowView row)
-        {
-            CreateCar(row);
-        }
-
-        private void CreateCar(int id = -1, 
-            string make = "",
-            string model = "",
-            int? year = null, 
-            string vin = "", 
-            int? clientId = -1)
-        {
             this.id = id;
             this.make = make;
             this.model = model;
@@ -60,23 +35,9 @@ namespace InteticsTest.Model
             this.vin = vin;
             this.clientId = clientId;
         }
-
-        private void CreateCar(string id = "", 
-            string make = "", 
-            string model = "", 
-            string year = "", 
-            string vin = "", 
-            string clientId = "")
+        
+        private static int? ParseYear(string year)
         {
-            int i;
-            try
-            {
-                i = Int32.Parse(id);
-            }
-            catch
-            {
-                i = -1;
-            }
             int? y;
             try
             {
@@ -86,37 +47,26 @@ namespace InteticsTest.Model
             {
                 y = null;
             }
-            int? ci;
-            try
-            {
-                ci = Int32.Parse(clientId);
-            }
-            catch
-            {
-                ci = -1;
-            }
-
-            CreateCar(i, make, model, y, vin, ci);
+            return y;
         }
 
-        private void CreateCar(DataRowView row)
-        {
-            if (row != null)
-            {
-                CreateCar(row["id_car"].ToString(),
+        public Car(string id = "",
+            string make = "",
+            string model = "",
+            string year = "",
+            string vin = "",
+            string clientId = ""):this(ParseId(id), make, model, ParseYear(year), vin, ParseId(clientId))
+        { }
+
+        public Car(DataRowView row) : this(row["id_car"].ToString(),
                       row["make"].ToString(),
                       row["model"].ToString(),
                       row["year"].ToString(),
                       row["vin"].ToString(),
-                      row["id_client"].ToString());
-            }
-            else
-            {
-                MessageBox.Show("Error", "Car", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+                      row["id_client"].ToString())
+        { }
 
-        public bool HasEmptyData()
+        public override bool HasEmptyData()
         {
             if (vin == "" || clientId == null || clientId == -1)
             {

@@ -1,4 +1,5 @@
-﻿using InteticsTest.Model;
+﻿using InteticsTest.Factory;
+using InteticsTest.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,6 +26,7 @@ namespace InteticsTest
         NewOrder newOrderWindow;
 
         CarRepository repository;
+        CarCreator creator = new CarCreator();
 
         public CarsList()
         {
@@ -62,8 +64,8 @@ namespace InteticsTest
         private void chooseCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView currentRow = (DataRowView)this.carDataGrid.SelectedItem;
-
-            Car car = new Car(currentRow);
+            creator.Create(currentRow);
+            Car car = creator.Create(currentRow);
             if (!repository.ValidImportCar(car)) return;
 
             newOrderWindow.SetCarData(new Car(currentRow));

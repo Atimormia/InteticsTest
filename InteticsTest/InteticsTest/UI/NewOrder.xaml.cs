@@ -93,7 +93,7 @@ namespace InteticsTest
             Order order = new Order();
             order.id = orderId;
             order.date = orderDate.SelectedDate;
-            order.SetAmount(orderAmount.Text);
+            order.amount = Order.ParseAmount(orderAmount.Text);
             order.status = orderStatus.Text;
             order.carId = carId;
             order.clientId = clientId;

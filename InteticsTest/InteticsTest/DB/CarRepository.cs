@@ -93,7 +93,7 @@ namespace InteticsTest.Model
                 MessageBox.Show("Success", "Operation with data", MessageBoxButton.OK, MessageBoxImage.Information);
                 return true;
             }
-            return true;
+            return false;
         }
 
         public int FillCarsList()
