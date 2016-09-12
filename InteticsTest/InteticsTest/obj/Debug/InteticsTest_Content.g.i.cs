@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("servicestationdataset.xsd")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("db/servicestation.mdf")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("db/servicestation_log.ldf")]
 

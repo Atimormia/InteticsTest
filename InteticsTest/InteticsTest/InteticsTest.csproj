@@ -61,7 +61,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -84,11 +86,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\Car.cs" />
-    <Compile Include="Model\CarRepository.cs" />
+    <Compile Include="DB\CarRepository.cs" />
     <Compile Include="Model\Client.cs" />
-    <Compile Include="Model\ClientRepository.cs" />
+    <Compile Include="DB\ClientRepository.cs" />
     <Compile Include="Model\Order.cs" />
-    <Compile Include="Model\OrderRepository.cs" />
+    <Compile Include="DB\OrderRepository.cs" />
     <Compile Include="UI\CarsList.xaml.cs">
       <DependentUpon>CarsList.xaml</DependentUpon>
     </Compile>
@@ -97,11 +99,13 @@
     </Compile>
     <Compile Include="ServiceStationDataSet.cs">
       <DependentUpon>ServiceStationDataSet.xsd</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ServiceStationDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ServiceStationDataSet.xsd</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Page Include="UI\CarsList.xaml">
       <SubType>Designer</SubType>
@@ -164,14 +168,17 @@
     <AppDesigner Include="Properties\" />
     <None Include="ServiceStationDataSet.xsc">
       <DependentUpon>ServiceStationDataSet.xsd</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="ServiceStationDataSet.xsd">
+    <Content Include="ServiceStationDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>ServiceStationDataSet.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </None>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="ServiceStationDataSet.xss">
       <DependentUpon>ServiceStationDataSet.xsd</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
