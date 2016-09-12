@@ -13,15 +13,33 @@ namespace InteticsTest.Model
     class OrderRepository
     {
         OrderTableAdapter serviceStationDataSetOrderTableAdapter = new OrderTableAdapter();
-        public ServiceStationDataSet serviceStationDataSet;
+        ServiceStationDataSet serviceStationDataSet;
 
         public OrderRepository() { }
 
         public OrderRepository(ServiceStationDataSet dataSet)
         {
             serviceStationDataSet = dataSet;
-            //serviceStationDataSetOrderTableAdapter.Connection.ConnectionString = ConfigurationManager.ConnectionStrings["InteticsTest.Properties.Settings.ServiceStationConnectionString"].ConnectionString;
+        }
 
+        public bool ValidImportOrder(Order order)
+        {
+            if (order == null)
+            {
+                MessageBox.Show("Error", "Operation with data", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private bool OrderHasEmptyData(Order order)
+        {
+            if (order.HasEmptyIds() || order.HasEmptyData())
+            {
+                MessageBox.Show("Enter order data", "OrdersList", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return true;
+            }
+            return false;
         }
 
         public OrderDataTable GetAll()
@@ -31,11 +49,7 @@ namespace InteticsTest.Model
 
         public bool Delete(Order order)
         {
-            if (order == null)
-            {
-                MessageBox.Show("Error", "Operation with data", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+            if (!ValidImportOrder(order)) return false;
             
             if (serviceStationDataSetOrderTableAdapter.DeleteById(order.id) > 0)
             {
@@ -53,11 +67,7 @@ namespace InteticsTest.Model
 
         public bool Update(Order order)
         {
-            if (order == null)
-            {
-                MessageBox.Show("Error", "Operation with data", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+            if (!ValidImportOrder(order) || OrderHasEmptyData(order)) return false;
 
             if (serviceStationDataSetOrderTableAdapter.UpdateById(order.date,order.amount,order.status,order.carId,order.clientId,order.id) > 0)
             {
@@ -69,17 +79,7 @@ namespace InteticsTest.Model
 
         public bool Insert(Order order)
         {
-            if (order == null)
-            {
-                MessageBox.Show("Error", "Operation with data", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (order.HasEmptyData())
-            {
-                MessageBox.Show("Enter Order data", "OrdersList", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
+            if (!ValidImportOrder(order) || OrderHasEmptyData(order)) return false;
 
             if (serviceStationDataSetOrderTableAdapter.Insert(order.date, order.amount, order.status, order.carId, order.clientId) > 0)
             {

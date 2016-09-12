@@ -2294,8 +2294,8 @@ SELECT id_car, make, model, year, vin, id_client FROM Car WHERE (id_car = @id_ca
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@id_car", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "id_car", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "SELECT        id_car, make, model, year, vin\r\nFROM            Car\r\nWHERE        (" +
-                "id_client = @id_client)";
+            this._commandCollection[3].CommandText = "SELECT        id_car, make, model, year, vin, id_client\r\nFROM            Car\r\nWHE" +
+                "RE        (id_client = @id_client)";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@id_client", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "id_client", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();

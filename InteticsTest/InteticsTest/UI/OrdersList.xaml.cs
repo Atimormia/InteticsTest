@@ -21,18 +21,13 @@ namespace InteticsTest
     /// </summary>
     public partial class OrdersList : Window
     {
-        //InteticsTest.ServiceStationDataSet serviceStationDataSet;
-        //InteticsTest.ServiceStationDataSetTableAdapters.OrderTableAdapter serviceStationDataSetOrderTableAdapter;
-
         OrderRepository repository;
 
         public OrdersList()
         {
             InitializeComponent();
-            ServiceStationDataSet serviceStationDataSet = ((InteticsTest.ServiceStationDataSet)(this.FindResource("serviceStationDataSet")));
+            ServiceStationDataSet serviceStationDataSet = ((ServiceStationDataSet)(this.FindResource("serviceStationDataSet")));
             repository = new OrderRepository(serviceStationDataSet);
-           
-            //serviceStationDataSetOrderTableAdapter = new InteticsTest.ServiceStationDataSetTableAdapters.OrderTableAdapter();
         }
 
         public void ReloadData()
@@ -43,8 +38,6 @@ namespace InteticsTest
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             repository.FillOrdersList();
-            //CollectionViewSource orderViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("orderViewSource")));
-            //orderViewSource.View.MoveCurrentToFirst();
         }
 
         private void addOrder_Click(object sender, RoutedEventArgs e)
@@ -56,16 +49,13 @@ namespace InteticsTest
         private void editOrder_Click(object sender, RoutedEventArgs e)
         {
             DataRowView currentRow = (DataRowView)this.orderDataGrid.SelectedItem;
-            if (currentRow == null)
-            {
-                MessageBox.Show("Error","Error",MessageBoxButton.OK,MessageBoxImage.Error);
-                return;
-            }
+            Order order = new Order(currentRow);
+            if (!repository.ValidImportOrder(order)) return;
 
             NewOrder newOrderWindow = new NewOrder(this);
             newOrderWindow.SetClientData(ComposeClient(currentRow));
             newOrderWindow.SetCarData(ComposeCar(currentRow));
-            newOrderWindow.SetOrderData(new Order(currentRow));
+            newOrderWindow.SetOrderData(order);
             newOrderWindow.Show();
         }
 
@@ -107,9 +97,7 @@ namespace InteticsTest
         
         private void find_Click(object sender, RoutedEventArgs e)
         {
-            Car car = new Car();
-            car.vin = carVinFind.Text;
-            repository.FillOrdersListByCar(car);
+            repository.FillOrdersListByCar(new Car(id: -1, vin: carVinFind.Text));
         }
     }
 }

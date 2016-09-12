@@ -36,7 +36,6 @@ C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\Cl
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\MainWindow.g.cs
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\NewOrder.g.cs
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\OrdersList.g.cs
-C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\Window1.g.cs
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\App.g.cs
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\InteticsTest_Content.g.cs
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\GeneratedInternalTypeHelper.g.cs
@@ -47,7 +46,6 @@ C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\Cl
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\MainWindow.baml
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\NewOrder.baml
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\OrdersList.baml
-C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\UI\Window1.baml
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\InteticsTest.g.resources
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\InteticsTest.Properties.Resources.resources
 C:\Users\Polina\Documents\inteticstest\InteticsTest\InteticsTest\obj\Debug\InteticsTest.csproj.GenerateResource.Cache

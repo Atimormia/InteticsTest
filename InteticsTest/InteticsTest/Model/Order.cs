@@ -17,37 +17,123 @@ namespace InteticsTest.Model
         public int? carId { get; set; }
         public int? clientId { get; set; }
 
-        bool hasEmptyData = true;
-
         public Order() { }
+
+        public Order(int id = -1,
+            DateTime? date = null,
+            double? amount = null,
+            string status = "",
+            int? carId = -1,
+            int? clientId = -1)
+        {
+            CreateOrder(id,date,amount,status,carId,clientId);
+        }
+
+        public Order(string id = "",
+            string date = "",
+            string amount = "",
+            string status = "",
+            string carId = "",
+            string clientId = "")
+        {
+            CreateOrder(id, date, amount, status, carId, clientId);
+        }
 
         public Order(DataRowView row)
         {
-            if (row["id_order"].ToString() != "" && row["id_car"].ToString() != "" && row["id_client"].ToString() != "")
-            {
-                id = Int32.Parse(row["id_order"].ToString());
-                date = DateTime.Parse(row["date"].ToString());
-                SetAmount(row["amount"].ToString());
-                status = row["status"].ToString();
-                clientId = Int32.Parse(row["id_client"].ToString());
-                carId = Int32.Parse(row["id_car"].ToString());
+            CreateOrder(row);
+        }
 
-                hasEmptyData = false;
+        private void CreateOrder(int id = -1,
+            DateTime? date = null,
+            double? amount = null,
+            string status = "",
+            int? carId = -1,
+            int? clientId = -1)
+        {
+            this.id = id;
+            this.date = date;
+            if (ValidateAmount(amount)) this.amount = amount;
+            this.status = status;
+            this.carId = carId;
+            this.clientId = clientId;
+        }
+
+        private void CreateOrder(string id = "",
+            string date = "",
+            string amount = "",
+            string status = "",
+            string carId = "",
+            string clientId = "")
+        {
+            int i;
+            try
+            {
+                i = Int32.Parse(id);
+            }
+            catch
+            {
+                i = -1;
+            }
+            DateTime? d;
+            try
+            {
+                d = DateTime.Parse(date);
+            }
+            catch
+            {
+                d = null;
+            }
+            double? a = null;
+            if (ValidateAmount(amount))
+            {
+                a = Double.Parse(amount);
+            }
+            int cl;
+            try
+            {
+                cl = Int32.Parse(clientId);
+            }
+            catch
+            {
+                cl = -1;
+            }
+            int c;
+            try
+            {
+                c = Int32.Parse(carId);
+            }
+            catch
+            {
+                c = -1;
+            }
+            CreateOrder(i, d, a, status, c, cl);
+        }
+
+        private void CreateOrder(DataRowView row)
+        {
+            if (row != null)
+            {
+                CreateOrder(row["id_order"].ToString(),
+                    row["date"].ToString(),
+                    row["amount"].ToString(),
+                    row["status"].ToString(),
+                    row["id_client"].ToString(),
+                    row["id_car"].ToString());
             }
             else
             {
-                MessageBox.Show("Enter order data", "Order", MessageBoxButton.OK, MessageBoxImage.Warning);
-                hasEmptyData = true;
+                MessageBox.Show("Error", "Order", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         public bool HasEmptyIds()
         {
-            if (id == -1 || carId ==null || clientId==null || carId == -1 || clientId == -1)
+            if (carId ==null || clientId==null || carId == -1 || clientId == -1)
             { 
                 return true;
             }
-            return hasEmptyData;
+            return false;
         }
 
         public static bool ValidateAmount(double? amount)

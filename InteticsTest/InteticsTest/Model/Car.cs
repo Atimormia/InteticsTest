@@ -17,35 +17,116 @@ namespace InteticsTest.Model
         public string vin { get; set; }
         public int? clientId { get; set; }
 
-        bool hasEmptyData = true;
 
         public Car()
         { }
 
+        public Car(int id = -1,
+            string make = "",
+            string model = "",
+            int? year = null,
+            string vin = "",
+            int? clientId = -1)
+        {
+            CreateCar(id, make, model, year, vin, clientId);
+        }
+
+        public Car(string id = "",
+            string make = "",
+            string model = "",
+            string year = "",
+            string vin = "",
+            string clientId = "")
+        {
+            CreateCar(id, make, model, year, vin, clientId);
+        }
+
         public Car(DataRowView row)
         {
+            CreateCar(row);
+        }
 
-            if (row["id_car"].ToString() != "" && row["vin"].ToString() != "" && row["id_client"].ToString() != "")
+        private void CreateCar(int id = -1, 
+            string make = "",
+            string model = "",
+            int? year = null, 
+            string vin = "", 
+            int? clientId = -1)
+        {
+            this.id = id;
+            this.make = make;
+            this.model = model;
+            this.year = year;
+            this.vin = vin;
+            this.clientId = clientId;
+        }
+
+        private void CreateCar(string id = "", 
+            string make = "", 
+            string model = "", 
+            string year = "", 
+            string vin = "", 
+            string clientId = "")
+        {
+            int i;
+            try
             {
-                id = Int32.Parse(row["id_car"].ToString());
-                make = row["make"].ToString();
-                model = row["model"].ToString();
-                year = Int32.Parse(row["year"].ToString());
-                vin = row["vin"].ToString();
-                clientId = Int32.Parse(row["id_client"].ToString());
-                hasEmptyData = false;
+                i = Int32.Parse(id);
+            }
+            catch
+            {
+                i = -1;
+            }
+            int? y;
+            try
+            {
+                y = Int32.Parse(year);
+            }
+            catch
+            {
+                y = null;
+            }
+            int? ci;
+            try
+            {
+                ci = Int32.Parse(clientId);
+            }
+            catch
+            {
+                ci = -1;
+            }
+
+            CreateCar(i, make, model, y, vin, ci);
+        }
+
+        private void CreateCar(DataRowView row)
+        {
+            if (row != null)
+            {
+                CreateCar(row["id_car"].ToString(),
+                      row["make"].ToString(),
+                      row["model"].ToString(),
+                      row["year"].ToString(),
+                      row["vin"].ToString(),
+                      row["id_client"].ToString());
             }
             else
-            { 
-                MessageBox.Show("Enter car data", "Car", MessageBoxButton.OK, MessageBoxImage.Warning);
-                hasEmptyData = true;
+            {
+                MessageBox.Show("Error", "Car", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
         }
 
         public bool HasEmptyData()
         {
-            return hasEmptyData;
+            if (vin == "" || clientId == null || clientId == -1)
+            {
+                MessageBox.Show("Enter car data", "Car", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

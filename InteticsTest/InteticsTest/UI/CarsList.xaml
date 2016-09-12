@@ -17,6 +17,7 @@
                 <DataGridTextColumn x:Name="modelColumn" Binding="{Binding model}" Header="model" Width="100"/>
                 <DataGridTextColumn x:Name="yearColumn" Binding="{Binding year}" Header="year" Width="50"/>
                 <DataGridTextColumn x:Name="vinColumn" Binding="{Binding vin}" Header="vin" Width="100"/>
+                <DataGridTextColumn x:Name="is_clientColumn" Binding="{Binding id_client}" ClipboardContentBinding="{x:Null}" Header="id_client" Visibility="Hidden"/>
             </DataGrid.Columns>
         </DataGrid>
         <TextBox x:Name="clientName" HorizontalAlignment="Left" Height="23" Margin="59,10,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="152" IsEnabled="False"/>

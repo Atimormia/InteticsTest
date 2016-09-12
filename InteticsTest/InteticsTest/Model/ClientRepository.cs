@@ -16,12 +16,35 @@ namespace InteticsTest.Model
 {
     public class ClientRepository
     {
-        ClientTableAdapter serviceStationDataSetClientTableAdapter;
+        ClientTableAdapter serviceStationDataSetClientTableAdapter = new ClientTableAdapter();
 
-        public ClientRepository()
+        ServiceStationDataSet serviceStationDataSet;
+
+        public ClientRepository() { }
+
+        public ClientRepository(ServiceStationDataSet dataSet)
         {
-            serviceStationDataSetClientTableAdapter = new ClientTableAdapter();
-            serviceStationDataSetClientTableAdapter.Connection.ConnectionString = ConfigurationManager.ConnectionStrings["InteticsTest.Properties.Settings.ServiceStationConnectionString"].ConnectionString;
+            serviceStationDataSet = dataSet;
+        }
+
+        public bool ValidImportClient(Client client)
+        {
+            if (client == null)
+            {
+                MessageBox.Show("Error", "Operation with data", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private bool ClientHasEmptyData(Client client)
+        {
+            if (client.HasEmptyData())
+            {
+                MessageBox.Show("Enter Client data", "ClientsList", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return true;
+            }
+            return false;
         }
 
         public ClientDataTable GetClientByNameSurname(Client client)
@@ -36,19 +59,24 @@ namespace InteticsTest.Model
 
         public bool Insert(Client client)
         {
-            if (client == null)
-            {
-                MessageBox.Show("Error", "Operation with data", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (serviceStationDataSetClientTableAdapter.Insert(client.firstName, client.lastName, client.dateOfBirth, client.address, client.phone, client.email.ToString()) > 0)
+            if (ValidImportClient(client) &&
+                !ClientHasEmptyData(client) && serviceStationDataSetClientTableAdapter.Insert(client.firstName, client.lastName, client.dateOfBirth, client.address, client.phone, client.email.ToString()) > 0)
             {
                 MessageBox.Show("Success", "Operation with data", MessageBoxButton.OK, MessageBoxImage.Information);
                 return true;
             }
 
             return false;
+        }
+
+        public int FillClientsList()
+        {
+            return serviceStationDataSetClientTableAdapter.Fill(serviceStationDataSet.Client);
+        }
+
+        public int FillClientsListByNameSuname(Client client)
+        {
+            return serviceStationDataSetClientTableAdapter.FillByNameSurname(serviceStationDataSet.Client, client.firstName, client.lastName);
         }
     }
 }

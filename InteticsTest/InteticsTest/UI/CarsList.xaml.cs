@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InteticsTest.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -20,36 +21,40 @@ namespace InteticsTest
     /// </summary>
     public partial class CarsList : Window
     {
-        InteticsTest.ServiceStationDataSet serviceStationDataSet;
-        InteticsTest.ServiceStationDataSetTableAdapters.CarTableAdapter serviceStationDataSetCarTableAdapter;
-
         int clientId = -1;
         NewOrder newOrderWindow;
+
+        CarRepository repository;
 
         public CarsList()
         {
             InitializeComponent();
 
-            serviceStationDataSet = ((InteticsTest.ServiceStationDataSet)(this.FindResource("serviceStationDataSet")));
-            serviceStationDataSetCarTableAdapter = new InteticsTest.ServiceStationDataSetTableAdapters.CarTableAdapter();
+            ServiceStationDataSet serviceStationDataSet = ((ServiceStationDataSet)(this.FindResource("serviceStationDataSet")));
+            repository = new CarRepository(serviceStationDataSet);
         }
 
-        public CarsList(int clientId, string clientName, string clientSurname):this()
+        public CarsList(Client client):this()
         {
-            this.clientId = clientId;
-            this.clientName.Text = clientName;
-            this.clientSurname.Text = clientSurname;
+            this.clientId = client.id;
+            this.clientName.Text = client.firstName;
+            this.clientSurname.Text = client.lastName;
         }
 
-        public CarsList(NewOrder parent,int clientId, string clientName, string clientSurname):this(clientId,clientName,clientSurname)
+        public CarsList(NewOrder parent, Client client):this(client)
         {
             newOrderWindow = parent;
             chooseCar.IsEnabled = true;
         }
 
+        public void ReloadData()
+        {
+            repository.FillCarsListByClient(new Client(id: clientId));
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            serviceStationDataSetCarTableAdapter.FillByClientId(serviceStationDataSet.Car,clientId);
+            ReloadData();
             CollectionViewSource carViewSource = ((CollectionViewSource)(this.FindResource("carViewSource")));
             carViewSource.View.MoveCurrentToFirst();
         }
@@ -57,15 +62,11 @@ namespace InteticsTest
         private void chooseCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView currentRow = (DataRowView)this.carDataGrid.SelectedItem;
-            if (currentRow == null)
-            {
-                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
 
-            int id = Int32.Parse(currentRow[0].ToString());
-            string vin = currentRow[4].ToString();
-            newOrderWindow.SetCarData(id,vin);
+            Car car = new Car(currentRow);
+            if (!repository.ValidImportCar(car)) return;
+
+            newOrderWindow.SetCarData(new Car(currentRow));
 
             this.Close();
         }
@@ -73,64 +74,28 @@ namespace InteticsTest
         private void addCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)carDataGrid.Items[carDataGrid.Items.Count - 2];
-            if (row == null)
-            {
-                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            for (int i = 1; i < row.Row.Table.Columns.Count-1; i++)
-            {
-                //MessageBox.Show(row[i].ToString());
-                if (row[i].ToString() == "")
-                {
-                    MessageBox.Show("Enter car data","CarsList",MessageBoxButton.OK,MessageBoxImage.Warning);
-                    return;
-                }
-            }
-            if (serviceStationDataSetCarTableAdapter.Insert(row[1].ToString(), row[2].ToString(), Int32.Parse(row[3].ToString()), row[4].ToString(), clientId) > 0)
-            {
-                MessageBox.Show("Success");
-                serviceStationDataSetCarTableAdapter.FillByClientId(serviceStationDataSet.Car, clientId);
-            }
+            row["id_client"] = clientId;
+            
+            repository.Insert(new Car(row));
+            ReloadData();
         }
 
         private void editCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)carDataGrid.SelectedItem;
-            if (row == null)
-            {
-                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (serviceStationDataSetCarTableAdapter.UpdateByCarId(row[1].ToString(), row[2].ToString(), Int32.Parse(row[3].ToString()), row[4].ToString(), clientId, Int32.Parse(row[0].ToString())) > 0)
-            {
-                MessageBox.Show("Success");
-                serviceStationDataSetCarTableAdapter.FillByClientId(serviceStationDataSet.Car, clientId);
-            }
+            row["id_client"] = clientId;
+           
+            repository.Update(new Car(row));
+            ReloadData();
         }
 
         private void deleteCar_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)carDataGrid.SelectedItem;
-            if (row == null)
-            {
-                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            row["id_client"] = clientId;            
 
-            int carId = Int32.Parse(row[0].ToString());
-            int ordersCount = (int)serviceStationDataSetCarTableAdapter.CountOrdersByClientId(carId);
-
-            if (ordersCount == 0)
-            {
-                if (serviceStationDataSetCarTableAdapter.DeleteByCarId(carId) > 0)
-                {
-                    MessageBox.Show("Success");
-                    serviceStationDataSetCarTableAdapter.FillByClientId(serviceStationDataSet.Car, clientId);
-                }
-            }
+            repository.Delete(new Car(row));
+            ReloadData();
         }
     }
 }

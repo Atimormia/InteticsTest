@@ -17,42 +17,122 @@ namespace InteticsTest.Model
         public DateTime? dateOfBirth { get; set; }
         public string address { get; set; }
         public string phone { get; set; }
-        public MailAddress email { get; set; }
-
-        bool hasEmptyData = true;
+        public string email { get; set; }
 
         public Client() {  }
 
+        public Client(int id = -1,
+            string firstName = "",
+            string lastName = "",
+            DateTime? date = null,
+            string address = "",
+            string phone = "",
+            string email = "")
+        {
+            CreateClient(id, firstName, lastName, date, address, phone, email);
+        }
+
+        public Client(string id = "",
+            string firstName = "",
+            string lastName = "",
+            string date = "",
+            string address = "",
+            string phone = "",
+            string email = "")
+        {
+            CreateClient(id, firstName, lastName, date, address, phone, email);
+        }
+
         public Client(DataRowView row)
         {
-            if (row["id_client"].ToString() != "" && row["first_name"].ToString() != "" && row["last_name"].ToString() != "")
+            CreateClient(row);
+        }
+        
+        private void CreateClient(int id = -1,
+            string firstName = "", 
+            string lastName = "", 
+            DateTime? date = null, 
+            string address = "",
+            string phone = "",
+            string email = "")
+        {
+            this.id = id;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.dateOfBirth = date;
+            this.address = address;
+            this.phone = phone;
+            try
             {
-                id = Int32.Parse(row["id_client"].ToString());
-                firstName = row["first_name"].ToString();
-                lastName = row["last_name"].ToString();
-                dateOfBirth = DateTime.Parse(row["date_of_birth"].ToString());
-                address = row["address"].ToString();
-                phone = row["phone"].ToString();
-                try
-                {
-                    email = new MailAddress(row["clientId"].ToString());
-                }
-                catch
-                {
-                    email = null;
-                }
-                hasEmptyData = false;
+                MailAddress em = new MailAddress(email);
+                this.email = email;
+            }
+            catch
+            {
+                this.email = "";
+            }
+        }
+
+        private void CreateClient(string id = "",
+            string firstName = "",
+            string lastName = "",
+            string date = "",
+            string address = "",
+            string phone = "",
+            string email = "")
+
+        {
+            int i;
+            try
+            {
+                i = Int32.Parse(id);
+            }
+            catch
+            {
+                i = -1;
+            }
+            DateTime? d;
+            try
+            {
+                d = DateTime.Parse(date);
+            }
+            catch
+            {
+                d = null;
+            }
+            
+            CreateClient(i, firstName, lastName, d, address, phone, email);
+        }
+
+        private void CreateClient(DataRowView row)
+        {
+            if (row != null)
+            {
+                CreateClient(row["id_client"].ToString(),
+                 row["first_name"].ToString(),
+                 row["last_name"].ToString(),
+                 row["date_of_birth"].ToString(),
+                 row["address"].ToString(),
+                 row["phone"].ToString(),
+                 row["email"].ToString());
             }
             else
             {
-                MessageBox.Show("Enter client data", "Client", MessageBoxButton.OK, MessageBoxImage.Warning);
-                hasEmptyData = true;
+                MessageBox.Show("Error", "Client", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         public bool HasEmptyData()
         {
-            return hasEmptyData;
+            if (firstName == "" || lastName == "")
+            {
+                MessageBox.Show("Enter client data", "Client", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

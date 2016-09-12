@@ -30,8 +30,7 @@ namespace InteticsTest
         
         public NewOrder()
         {
-            InitializeComponent();
-            
+            InitializeComponent();            
         }
 
         public NewOrder(OrdersList parent) : this()
@@ -76,18 +75,14 @@ namespace InteticsTest
             {
                 return;
             }
-            if (order.HasEmptyIds() || order.HasEmptyData())
-            {
-                MessageBox.Show("Enter order data", "New Order", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            
             if (ordersListWindow == null)
             {
-                repository.Insert(order);
+                if(!repository.Insert(order)) return;
             }
             else
             {
-                repository.Update(order);
+                if(!repository.Update(order)) return;
                 ordersListWindow.ReloadData();               
             }
             Close();
@@ -115,7 +110,7 @@ namespace InteticsTest
         {
             if (clientId != -1)
             {
-                CarsList window = new CarsList(this,clientId, clientName.Text, clientSurname.Text);
+                CarsList window = new CarsList(this,new Client(clientId, clientName.Text, clientSurname.Text));
                 window.Show();
             }
             else

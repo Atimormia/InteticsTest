@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.Objects;
+using InteticsTest.Model;
 
 namespace InteticsTest
 {
@@ -21,18 +22,16 @@ namespace InteticsTest
     /// </summary>
     public partial class ClientCard : Window
     {
-        InteticsTest.ServiceStationDataSet serviceStationDataSet;
-        InteticsTest.ServiceStationDataSetTableAdapters.ClientTableAdapter serviceStationDataSetClientTableAdapter;
-
         NewOrder newOrderWindow;
-        
+
+        ClientRepository repository;
 
         public ClientCard()
         {
             InitializeComponent();
-            
-            serviceStationDataSet = ((InteticsTest.ServiceStationDataSet)(this.FindResource("serviceStationDataSet")));
-            serviceStationDataSetClientTableAdapter = new InteticsTest.ServiceStationDataSetTableAdapters.ClientTableAdapter();
+
+            ServiceStationDataSet serviceStationDataSet = ((ServiceStationDataSet)(this.FindResource("serviceStationDataSet")));
+            repository = new ClientRepository(serviceStationDataSet);
         }
 
         public ClientCard(NewOrder parent):this()
@@ -42,29 +41,21 @@ namespace InteticsTest
             chooseClient.IsEnabled = true;
         }
 
-        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void ReloadData()
         {
-
-        }
-
-        private void dataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-
+            repository.FillClientsList();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
-
-
-            serviceStationDataSetClientTableAdapter.Fill(serviceStationDataSet.Client);
-            System.Windows.Data.CollectionViewSource clientViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("clientViewSource")));
+            ReloadData();
+            CollectionViewSource clientViewSource = ((CollectionViewSource)(this.FindResource("clientViewSource")));
             clientViewSource.View.MoveCurrentToFirst();
         }
 
         private void find_Click(object sender, RoutedEventArgs e)
         {
-            serviceStationDataSetClientTableAdapter.FillByNameSurname(serviceStationDataSet.Client,nameClient.Text,surnameClient.Text);
+            repository.FillClientsListByNameSuname(new Client(id: -1, firstName: nameClient.Text, lastName: surnameClient.Text));
             if (clientDataGrid.Items.Count == 1)
             {
                 MessageBox.Show("There are nothing to show. To add client enter information and click Add button","Nothing to show",MessageBoxButton.OK,MessageBoxImage.Information);
@@ -74,57 +65,44 @@ namespace InteticsTest
         private void addClient_Click(object sender, RoutedEventArgs e)
         {
             DataRowView row = (DataRowView)clientDataGrid.Items[clientDataGrid.Items.Count-2];
-            if (row == null)
-            {
-                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            DateTime date = new DateTime();
-            if (DateTime.TryParse(row[3].ToString(), out date))
-                serviceStationDataSetClientTableAdapter.Insert(row[1].ToString(), row[2].ToString(), date, row[4].ToString(), row[5].ToString(), row[6].ToString());
-            else
-                serviceStationDataSetClientTableAdapter.Insert(row[1].ToString(), row[2].ToString(), null, row[4].ToString(), row[5].ToString(), row[6].ToString());
+
+            repository.Insert(new Client(row));
+            ReloadData();
         }
 
         private void showAll_Click(object sender, RoutedEventArgs e)
         {
-            serviceStationDataSetClientTableAdapter.Fill(serviceStationDataSet.Client);
+            ReloadData();
         }
 
-        private void GetClientDataFromCurrentRow(out int id, out string name, out string surname)
+        private Client GetClientDataFromCurrentRow()
         {
             DataRowView currentRow = (DataRowView)this.clientDataGrid.SelectedItem;
-            
-            id = Int32.Parse(currentRow[0].ToString());
-            name = currentRow[1].ToString();
-            surname = currentRow[2].ToString();
-
-            if (currentRow == null)
+            try
             {
-                MessageBox.Show("Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return new Client(currentRow);
             }
+            catch
+            {
+                return null;
+            }            
         }
 
         private void chooseClient_Click(object sender, RoutedEventArgs e)
         {
-            int id;
-            string name;
-            string surname;
-            GetClientDataFromCurrentRow(out id, out name, out surname);
-            newOrderWindow.SetClientData(id, name, surname);
+            Client client = GetClientDataFromCurrentRow();
+            if (!repository.ValidImportClient(client)) return;
+            newOrderWindow.SetClientData(client);
 
             this.Close();
         }
 
         private void relatedCars_Click(object sender, RoutedEventArgs e)
         {
-            int id;
-            string name;
-            string surname;
-            GetClientDataFromCurrentRow(out id, out name, out surname);
+            Client client = GetClientDataFromCurrentRow();
+            if (!repository.ValidImportClient(client)) return;
 
-            CarsList carsListWindow = new CarsList(id, name, surname);
+            CarsList carsListWindow = new CarsList(client);
             carsListWindow.Show();
         }
     }
